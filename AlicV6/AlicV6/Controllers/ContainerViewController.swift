@@ -11,8 +11,8 @@ class ContainerViewController: UIViewController, MainViewControllerDelegate {
 
         // Do any additional setup after loading the view.
         configureMainViewController()
-        configureMenuViewController()
-        showMenuViewController(shouldMove: true)
+//        configureMenuViewController()
+//        showMenuViewController(shouldMove: true)
         print("=================")
     }
 
@@ -22,14 +22,26 @@ class ContainerViewController: UIViewController, MainViewControllerDelegate {
         controller = mainViewController
         view.addSubview(controller.view)
         addChild(controller)
+        print("Добавили mainViewController")
+        
+//        if menuViewController == nil {
+//            menuViewController = MenuViewController()
+//
+//            view.insertSubview(menuViewController.view, at: 0)
+//            addChild(menuViewController)
+//            print("Добавили menuViewController")
+////            menuViewController.delegate = self
+//        }
     }
     
     func configureMenuViewController() {
-        if menuViewController == nil {
+       if menuViewController == nil {
+//        menuViewControllerTemp.delegate = self
             menuViewController = MenuViewController()
-            view.insertSubview(menuViewController.view, at: 50)
+//
+            view.insertSubview(menuViewController.view, at: 0)
             addChild(menuViewController)
-            print("Добавили mainViewController")
+            print("Добавили menuViewController")
         }
     }
     
@@ -69,5 +81,6 @@ class ContainerViewController: UIViewController, MainViewControllerDelegate {
         showMenuViewController(shouldMove: isMove)
         print("Добавили")
     }
+
     
 }

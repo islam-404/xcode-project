@@ -1,8 +1,6 @@
 import UIKit
 
-protocol MainViewControllerDelegate {
-    func toggleMenu()
-}
+
 
 struct Alic: Decodable {
     let id: String
@@ -18,27 +16,29 @@ struct Alic: Decodable {
         case electron
         case home
         case sport
-//        case mobile = "Телефоны"
-//        case pc = "ПК"
-//        case electron = "Элекктроника"
-//        case home = "Для дома"
-//        case sport = "Спорт"
+        //        case mobile = "Телефоны"
+        //        case pc = "ПК"
+        //        case electron = "Элекктроника"
+        //        case home = "Для дома"
+        //        case sport = "Спорт"
     }
+}
+protocol MainViewControllerDelegate: AnyObject {
+    func toggleMenu()
 }
 
 class MainViewController: UIViewController {
-
+    
+    @IBOutlet weak var menuButton: UIButton!
+    
     @IBOutlet weak var mainViewCollection: UICollectionView!
-    var delegate: MainViewControllerDelegate?
+    weak var delegate: MainViewControllerDelegate?
     
     @IBAction func menuButton(_ sender: UIButton) {
-//                 delegate?.toggleMenu()
         delegate?.toggleMenu()
-             print("00")
-         }
+    }
+    
     var numCategoryTrack = ""
-    
-    
     
     
     var alicItems: [Alic] = []
@@ -55,28 +55,28 @@ class MainViewController: UIViewController {
         return label
     }()
     
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//    override func viewDidAppear(_ animated: Bool) {
-//        print("apear")
-//        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-//    }
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-//
-//    }
-//
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-////        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-//    }
-        
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-//        qwe(index: numCategoryTrack)
-//    }
+    //    override func viewDidLayoutSubviews() {
+    //        super.viewDidLayoutSubviews()
+    //    override func viewDidAppear(_ animated: Bool) {
+    //        print("apear")
+    //        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    //    }
+    //    override func viewWillAppear(_ animated: Bool) {
+    //        super.viewWillAppear(animated)
+    //        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    //
+    //    }
+    //
+    //    override func viewWillLayoutSubviews() {
+    //        super.viewWillLayoutSubviews()
+    ////        print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    //    }
+    
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            print(numCategoryTrack, "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+            qwe(index: numCategoryTrack)
+        }
     
     
     
@@ -85,20 +85,18 @@ class MainViewController: UIViewController {
         
         let urlString = "https://islam-404.github.io/alic/db/db.json"
         guard let url = URL(string: urlString) else { return }
-        
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print(error)
                 return
             }
             guard let data = data else { return }
-            
+
             do{
-                print( "123")
                 let alic = try JSONDecoder().decode([Alic].self, from: data)
-                print("1234")
                 self.alicItems = alic
-//                self.alicAllItems = alic
+                //                self.alicAllItems = alic
                 self.alicItems.forEach { item in
                     switch item.category[0] {
                     case .mobile:
@@ -113,50 +111,50 @@ class MainViewController: UIViewController {
                         self.pc.append( item)
                     }
                 }
-                
+
                 DispatchQueue.main.async{
                     self.mainViewCollection.reloadData()
                 }
             } catch{
                 print(error)
             }
-//            print(self.alicItems[0].price)
+            //            print(self.alicItems[0].price)
         }.resume()
-        
+
         print(alicItems)
         mainViewCollection.delegate = self
         mainViewCollection.dataSource = self
-//        mainViewCollection.collectionViewLayout = UICollectionViewLayout()
+        //        mainViewCollection.collectionViewLayout = UICollectionViewLayout()
+      
         
     }
-    func qwe (index: String) {
+    func qwe(index: String) {
         print(index)
         if index != "" {
-            
-//            print(Alic.Category.init(rawValue: "\(index)") ?? "kk", "print qwe")
+
+            //            print(Alic.Category.init(rawValue: "\(index)") ?? "kk", "print qwe")
         } else {
             print("FALSE QWE")
         }
-//        alicItems = home
-//        mainViewCollection.reloadData()
+        //        alicItems = home
+        //        mainViewCollection.reloadData()
     }
     
     
- 
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       if segue.identifier == "ShowDetail" {
-           if let indexPath = self.mainViewCollection.indexPathsForSelectedItems {
-               DispatchQueue.main.async{
-                   let index = Int(indexPath[0][1])
-                       let detalsVC = segue.destination as! DetailVC
-                           detalsVC.detalTrack.append(self.alicItems[index])
-               }
-           }
+        if segue.identifier == "ShowDetail" {
+            if let indexPath = self.mainViewCollection.indexPathsForSelectedItems {
+                DispatchQueue.main.async{
+                    let index = Int(indexPath[0][1])
+                    let detalsVC = segue.destination as! DetailVC
+                    detalsVC.detalTrack.append(self.alicItems[index])
+                }
+            }
         }
-            
+        
     }
-
+    
 }
 
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -164,25 +162,25 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.alicItems.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlicItemsCollectionViewCell", for: indexPath) as! AlicItemsCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlicItemsCollectionViewCell", for: indexPath) as! AlicItemsCollectionViewCell
         
-//        DispatchQueue.main.async{
-            cell.setup(with: self.alicItems[indexPath.row])
-//        }
-                    return cell
-        }
-   
-////    2022-02-02 23:29:10.083119+0300 alicV3[75967:16998983] Failed to set (la) user defined inspected property on (alicV3.AlicItemsCollectionViewCell): [<alicV3.AlicItemsCollectionViewCell 0x1245168f0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key la.
-//
-    
-    
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.indetifier == "ShowDetail" {
-//
-//        }
-//    }
-//
+                DispatchQueue.main.async{
+        cell.setup(with: self.alicItems[indexPath.row])
+                }
+        return cell
     }
+    
+    ////    2022-02-02 23:29:10.083119+0300 alicV3[75967:16998983] Failed to set (la) user defined inspected property on (alicV3.AlicItemsCollectionViewCell): [<alicV3.AlicItemsCollectionViewCell 0x1245168f0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key la.
+    //
+    
+    
+    
+    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //        if segue.indetifier == "ShowDetail" {
+    //
+    //        }
+    //    }
+    //
+}

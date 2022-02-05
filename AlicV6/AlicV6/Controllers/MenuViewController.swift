@@ -1,9 +1,13 @@
 import UIKit
 
+//protocol MenuViewControllerDelegate {
+//    func toggleMenu()
+//}
 
 class MenuViewController: UIViewController {
 
     var tableView: UITableView!
+//    var delegate: MenuViewControllerDelegate?
     
     
     override func viewDidLoad() {
@@ -27,14 +31,22 @@ class MenuViewController: UIViewController {
         tableView.rowHeight = 90
         tableView.backgroundColor = .darkGray
     }
-    
+//    MenuViewController.delegate = self
     func clickCattegory(){
 //        self.toggleMenu()
+//        MenuViewControllerDelegate.toggl
+//        delegate?.toggleMenu()
+//        print(delegate?.toggleMenu())
     }
 
 }
+//
+//extension MenuViewController: MenuViewControllerDelegate {
 
-//extension MenuViewController: ContainerViewController {
+    
+//    func toggleMenu() {
+//    }
+//    delegate?.toggleMenu()
 //    func toggleMenu()
 //}
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
@@ -51,23 +63,11 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print(indexPath)
+        print(indexPath[1] + 1)
         tableView.deselectRow(at: indexPath, animated: true)
-        let index = Int(indexPath[1])
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as? MainViewController {
-            vc.numCategoryTrack = "\(index)"
-            
-            
-            
-//            vc.delegate?.toggleMenu()
-            show(vc, sender: nil)
-//            clickCattegory()
-//            ContainerViewController.showMenuViewController(shouldMove: false)
-        }
-//        print(menuModel)
-//            let detalsVC = segue.destination as! DetailVC
-//                detalsVC.detalTrack.append(self.alicItems[index])
+//        let index = Int(indexPath[1])
+//        delegate?.toggleMenu()
+//        
     }
     
     
